@@ -1,3 +1,15 @@
+'''
+    So instead of creating every number and checking, a better way is to just calculate possible solutions and return it
+
+    - so if n is even, it is obvious that half numbers are even and half are primes, so return 5**n/2 * 4**n/2 in that case (as 4 are primes and 5 are evens)
+
+    - for calculating powers, we impleted pow(x,n) in an iterative approach and that gives solution in optimal way
+
+    - TC: O(log n) | Binary exponentiation halves exponent each iteration
+    - SC: O(1) | Iterative; no recursion or extra data structures
+
+'''
+
 class Solution:
     def countGoodNumbers(self, n: int) -> int:
         def pow(x, y):
