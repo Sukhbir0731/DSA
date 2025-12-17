@@ -1,28 +1,26 @@
 import java.util.Arrays;
 
 class Solution {
-    int[] dp;
-    public int f(int i, int[] arr){
-        if (i==arr.length) return dp[i-1];
-        if (dp[i] != 0) return dp[i];
-        dp[i] = Math.max(dp[i-2]+arr[i], dp[i-1]);
-        return f(i+1, arr);
-    }
+    // no global initializations
     public int rob(int[] nums) {
-        //Base cases
-        if(nums.length == 1) return nums[0];
-        if(nums.length == 2) return Math.max(nums[0], nums[1]);
-
-        dp = new int[nums.length - 1];
-        int[] arr1 = Arrays.copyOfRange(nums, 0, nums.length - 1);
-        dp[0] = arr1[0];
-        dp[1] = Math.max(arr1[0], arr1[1]);
-        int res1 = f(2, arr1);
-        dp = new int[nums.length - 1];
-        int[] arr2 = Arrays.copyOfRange(nums, 1, nums.length);
-        dp[0] = arr2[0];
-        dp[1] = Math.max(arr2[0], arr2[1]);
-        int res2 = f(2, arr2);
-        return Math.max(res1, res2);
+        int n = nums.length;
+        if (n == 1) return nums[0];
+        if (n == 2) return Math.max(nums[0], nums[1]);
+        int[] arr1 = Arrays.copyOfRange(nums, 0, n - 1);
+        int[] arr2 = Arrays.copyOfRange(nums, 1, n);
+        return Math.max(memoizedSolve(arr1), memoizedSolve(arr2));
+    }
+    private int memoizedSolve(int[] arr) {
+        int[] dp = new int[arr.length];
+        Arrays.fill(dp, -1); // Fill with -1 to distinguish from a 0 result
+        return f(arr.length - 1, arr, dp);
+    }
+    private int f(int i, int[] arr, int[] dp) {
+        if (i < 0) return 0;
+        if (i == 0) return arr[0];
+        if (dp[i] != -1) return dp[i];
+        int rob = arr[i] + f(i - 2, arr, dp);
+        int skip = f(i - 1, arr, dp);
+        return dp[i] = Math.max(rob, skip);
     }
 }
